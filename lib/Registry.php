@@ -8,9 +8,14 @@ namespace SimpleSAML\Module\oauth;
  * @author Andreas Åkre Solberg <andreas@uninett.no>, UNINETT AS.
  * @package SimpleSAMLphp
  */
-
 class Registry
 {
+    /**
+     * @param array $entry
+     * @param string $userid
+     * @return void
+     * @throws \Exception
+     */
     public static function requireOwnership($entry, $userid)
     {
         if (!isset($entry['owner'])) {
@@ -22,6 +27,13 @@ class Registry
         }
     }
 
+
+    /**
+     * @param array $request
+     * @param array &$entry
+     * @param string $key
+     * @return void
+     */
     protected function getStandardField($request, &$entry, $key)
     {
         if (array_key_exists('field_'.$key, $request)) {
@@ -31,6 +43,13 @@ class Registry
         }
     }
 
+
+    /**
+     * @param array $request
+     * @param array $entry
+     * @param array|null $override
+     * @return array
+     */
     public function formToMeta($request, $entry = [], $override = null)
     {
         $this->getStandardField($request, $entry, 'name');
@@ -48,6 +67,13 @@ class Registry
         return $entry;
     }
 
+
+    /**
+     * @param array $request
+     * @param string $key
+     * @return void
+     * @throws \Exception
+     */
     protected function requireStandardField($request, $key)
     {
         if (!array_key_exists('field_'.$key, $request)) {
@@ -58,6 +84,11 @@ class Registry
         }
     }
 
+
+    /**
+     * @param array $request
+     * @return void
+     */
     public function checkForm($request)
     {
         $this->requireStandardField($request, 'name');
@@ -65,11 +96,23 @@ class Registry
         $this->requireStandardField($request, 'key');
     }
 
+
+    /**
+     * @param string $name
+     * @return string
+     */
     protected function header($name)
     {
         return '<tr><td>&nbsp;</td><td class="header">'.$name.'</td></tr>';
     }
 
+
+    /**
+     * @param array $metadata
+     * @param string $key
+     * @param string $name
+     * @return string
+     */
     protected function readonlyDateField($metadata, $key, $name)
     {
         $value = '<span style="color: #aaa">Not set</a>';
@@ -79,6 +122,13 @@ class Registry
         return '<tr><td class="name">'.$name.'</td><td class="data">'.$value.'</td></tr>';
     }
 
+
+    /**
+     * @param array $metadata
+     * @param string $key
+     * @param string $name
+     * @return string
+     */
     protected function readonlyField($metadata, $key, $name)
     {
         $value = '';
@@ -88,11 +138,23 @@ class Registry
         return '<tr><td class="name">'.$name.'</td><td class="data">'.htmlspecialchars($value).'</td></tr>';
     }
 
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return string
+     */
     protected function hiddenField($key, $value)
     {
         return '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($value).'" />';
     }
 
+
+    /**
+     * @param array &$metadata
+     * @param string $key
+     * @return void
+     */
     protected function flattenLanguageField(&$metadata, $key)
     {
         if (array_key_exists($key, $metadata)) {
@@ -106,6 +168,14 @@ class Registry
         }
     }
 
+
+    /**
+     * @param array $metadata
+     * @param string $key
+     * @param string $name
+     * @param bool $textarea
+     * @return string
+     */
     protected function standardField($metadata, $key, $name, $textarea = false)
     {
         $value = '';
@@ -122,6 +192,11 @@ class Registry
         }
     }
 
+
+    /**
+     * @param array $metadata
+     * @return string
+     */
     public function metaToForm($metadata)
     {
         return '<form action="registry.edit.php" method="post">'.

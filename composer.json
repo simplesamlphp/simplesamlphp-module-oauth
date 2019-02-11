@@ -4,7 +4,7 @@
   "type": "simplesamlphp-module",
   "keywords": [ "SimpleSAMLphp", "OAuth1"],
   "homepage": "https://simplesamlphp.org/",
-  "license": "LGPL-3.1",
+  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Olav Morken",
@@ -19,8 +19,9 @@
     "simplesamlphp/composer-module-installer": ">=1.1.6"
   },
     "require-dev": {
-        "simplesamlphp/simplesamlphp": "^1.16",
-        "phpunit/phpunit": "~4.8.35"
+        "simplesamlphp/simplesamlphp": "^1.17",
+        "phpunit/phpunit": "~4.8.36",
+        "webmozart/assert": "1.4"
   },
   "support": {
     "issues": "https://github.com/simplesamlphp/simplesamlphp-module-oauth/issues",
