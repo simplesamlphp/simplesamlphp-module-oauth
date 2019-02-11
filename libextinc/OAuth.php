@@ -280,7 +280,7 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod
      *
      * Either way should return a string representation of the certificate
      *
-     * @param &OAuthRequest
+     * @param OAuthRequest &$request
      */
     abstract protected function fetch_private_cert(&$request);
 
@@ -499,7 +499,7 @@ class OAuthRequest
 
 
     /**
-     * @retirm array|null
+     * @return array|null
      */
     public function get_parameters()
     {
@@ -1022,6 +1022,7 @@ class OAuthDataStore
 {
     /**
      * @param string $consumer_key
+     * @return void
      */
     public function lookup_consumer($consumer_key)
     {
@@ -1033,6 +1034,7 @@ class OAuthDataStore
      * @param OAuthConsumer $consumer
      * @param string $token_type
      * @param string $token
+     * @return void
      */
     public function lookup_token($consumer, $token_type, $token)
     {
@@ -1045,6 +1047,7 @@ class OAuthDataStore
      * @param OAuthToken $token
      * @param string $nonce
      * @param int $timestamp
+     * @return void
      */
     public function lookup_nonce($consumer, $token, $nonce, $timestamp)
     {
@@ -1055,6 +1058,7 @@ class OAuthDataStore
     /**
      * @param OAuthConsumer $consumer
      * @param callable|null $callback
+     * @return void
      */
     public function new_request_token($consumer, $callback = null)
     {
@@ -1066,6 +1070,7 @@ class OAuthDataStore
      * @param OAuthToken $token
      * @param OAuthConsumer $consumer
      * @param string|null $verifier
+     * @return void
      */
     public function new_access_token($token, $consumer, $verifier = null)
     {
