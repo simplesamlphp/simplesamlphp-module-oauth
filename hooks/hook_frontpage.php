@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Hook to add link to the frontpage.
  *
  * @param array &$links  The links on the frontpage, split into sections.
+ * @return void
  */
 function oauth_hook_frontpage(&$links)
 {

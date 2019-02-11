@@ -10,23 +10,39 @@ require_once(dirname(dirname(__FILE__)).'/libextinc/OAuth.php');
  * @author Andreas Åkre Solberg, <andreas.solberg@uninett.no>, UNINETT AS.
  * @package SimpleSAMLphp
  */
-
 class Consumer
 {
+    /** @var \OAuthConsumer */
     private $consumer;
+
+    /** @var \OAuthSignatureMethod */
     private $signer;
 
+
+    /**
+     * @param string $key
+     * @param string $secret
+     */
     public function __construct($key, $secret)
     {
         $this->consumer = new \OAuthConsumer($key, $secret, null);
         $this->signer = new \OAuthSignatureMethod_HMAC_SHA1();
     }
 
-    // Used only to load the libextinc library early
+
+    /**
+     * Used only to load the libextinc library early
+     * @return void
+     */
     public static function dummy()
     {
     }
 
+
+    /**
+     * @param array $hrh
+     * @return string|null
+     */
     public static function getOAuthError($hrh)
     {
         foreach ($hrh as $h) {
@@ -37,6 +53,11 @@ class Consumer
         return null;
     }
 
+
+    /**
+     * @param array $hrh
+     * @return string|null
+     */
     public static function getContentType($hrh)
     {
         foreach ($hrh as $h) {
@@ -47,7 +68,8 @@ class Consumer
         return null;
     }
 
-    /*
+
+    /**
      * This static helper function wraps \SimpleSAML\Utils\HTTP::fetch
      * and throws an exception with diagnostics messages if it appear
      * to be failing on an OAuth endpoint.
@@ -55,6 +77,11 @@ class Consumer
      * If the status code is not 200, an exception is thrown. If the content-type
      * of the response if text/plain, the content of the response is included in
      * the text of the Exception thrown.
+     *
+     * @param string $url
+     * @param string $context
+     * @return string|array
+     * @throws \Exception
      */
     public static function getHTTP($url, $context = '')
     {
@@ -79,6 +106,13 @@ class Consumer
         return $response;
     }
 
+
+    /**
+     * @param string $url
+     * @param array|null $parameters
+     * @return \OAuthToken
+     * @throws \Exception
+     */
     public function getRequestToken($url, $parameters = null)
     {
         $req_req = \OAuthRequest::from_consumer_and_token($this->consumer, null, "GET", $url, $parameters);
@@ -101,6 +135,14 @@ class Consumer
         return new \OAuthToken($requestToken, $requestTokenSecret);
     }
 
+
+    /**
+     * @param string $url
+     * @param \OAuthToken $requestToken
+     * @param bool $redirect
+     * @param callable|null $callback
+     * @return string
+     */
     public function getAuthorizeRequest($url, $requestToken, $redirect = true, $callback = null)
     {
         $params = ['oauth_token' => $requestToken->key];
@@ -115,6 +157,14 @@ class Consumer
         return $authorizeURL;
     }
 
+
+    /**
+     * @param string $url
+     * @param \OAuthToken $requestToken
+     * @param array|null $parameters
+     * @return \OAuthToken
+     * @throws \Exception
+     */
     public function getAccessToken($url, $requestToken, $parameters = null)
     {
         $acc_req = \OAuthRequest::from_consumer_and_token($this->consumer, $requestToken, "GET", $url, $parameters);
@@ -128,6 +178,7 @@ class Consumer
 
         \SimpleSAML\Logger::debug('oauth: Reponse to get access token: '.$response_acc);
 
+        $accessResponseParsed = [];
         parse_str($response_acc, $accessResponseParsed);
 
         if (array_key_exists('error', $accessResponseParsed)) {
@@ -140,6 +191,14 @@ class Consumer
         return new \OAuthToken($accessToken, $accessTokenSecret);
     }
 
+
+    /**
+     * @param string $url
+     * @param \OAuthToken $accessToken
+     * @param array $parameters
+     * @return array|string
+     * @throws \SimpleSAML\Error\Exception
+     */
     public function postRequest($url, $accessToken, $parameters)
     {
         $data_req = \OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "POST", $url, $parameters);
@@ -167,6 +226,13 @@ class Consumer
         return $response;
     }
 
+
+    /**
+     * @param string $url
+     * @param \OAuthToken $accessToken
+     * @param array|null $opts
+     * @return array|null
+     */
     public function getUserInfo($url, $accessToken, $opts = null)
     {
         $data_req = \OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "GET", $url, null);
