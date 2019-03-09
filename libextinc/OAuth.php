@@ -85,10 +85,12 @@ class OAuthToken
      */
     public function to_string()
     {
-        return "oauth_token=".
-        OAuthUtil::urlencode_rfc3986($this->key).
-        "&oauth_token_secret=".
-        OAuthUtil::urlencode_rfc3986($this->secret).
+        /** @var string $key */
+        $key = OAuthUtil::urlencode_rfc3986($this->key);
+        /** @var string $secret */
+        $secret = OAuthUtil::urlencode_rfc3986($this->secret);
+        return "oauth_token=".$key.
+        "&oauth_token_secret=".$secret.
         "&oauth_callback_confirmed=true";
     }
 
@@ -191,6 +193,7 @@ class OAuthSignatureMethod_HMAC_SHA1 extends OAuthSignatureMethod
             ($token) ? $token->secret : ""
         ];
 
+        /** @var array $key_parts */
         $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
         $key = implode('&', $key_parts);
 
@@ -234,6 +237,7 @@ class OAuthSignatureMethod_PLAINTEXT extends OAuthSignatureMethod
             ($token) ? $token->secret : ""
         ];
 
+        /** @var array $key_parts */
         $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
         $key = implode('&', $key_parts);
         $request->base_string = $key;
@@ -269,7 +273,7 @@ abstract class OAuthSignatureMethod_RSA_SHA1 extends OAuthSignatureMethod
      *
      * Either way should return a string representation of the certificate
      *
-     * @param &OAuthRequest
+     * @param OAuthRequest &$request
      */
     abstract protected function fetch_public_cert(&$request);
 
@@ -552,6 +556,7 @@ class OAuthRequest
             $this->get_signable_parameters()
         ];
 
+        /** @var array $parts */
         $parts = OAuthUtil::urlencode_rfc3986($parts);
 
         return implode('&', $parts);
@@ -624,8 +629,10 @@ class OAuthRequest
     public function to_header($realm = null)
     {
         $first = true;
-        if ($realm) {
-            $out = 'Authorization: OAuth realm="'.OAuthUtil::urlencode_rfc3986($realm).'"';
+        if (!is_null($realm)) {
+            /** @var string $realm */
+            $realm = OAuthUtil::urlencode_rfc3986($realm);
+            $out = 'Authorization: OAuth realm="'.$realm.'"';
             $first = false;
         } else {
             $out = 'Authorization: OAuth';
@@ -639,10 +646,11 @@ class OAuthRequest
                 throw new OAuthException('Arrays not supported in headers');
             }
             $out .= ($first) ? ' ' : ',';
-            $out .= OAuthUtil::urlencode_rfc3986($k).
-                '="'.
-                OAuthUtil::urlencode_rfc3986($v).
-                '"';
+            /** @var string $key */
+            $key = OAuthUtil::urlencode_rfc3986($k);
+            /** @var string $vaule */
+            $value = OAuthUtil::urlencode_rfc3986($value);
+            $out .= $key.'="'.$value.'"';
             $first = false;
         }
         return $out;
@@ -929,7 +937,7 @@ class OAuthServer
      *
      * @param OAuthRequest $request
      * @param OAuthConsumer $consumer
-     * @param OAuthToken $token
+     * @param OAuthToken $token|null
      * @return void
      * @throws OAuthException
      */
