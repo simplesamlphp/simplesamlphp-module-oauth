@@ -946,8 +946,8 @@ class OAuthServer
         $this->checkTimestamp($timestamp);
         $this->checkNonce($consumer, $token, $nonce, $timestamp);
 
-        $signature_method = $this->getSignatureMethod($request);
-        $method = new $('OAuthSignatureMethod_'.$signature_method)
+        $signature_method = 'OAuthSignatureMethod_'.$this->getSignatureMethod($request);
+        $method = new $signature_method;
 
         $signature = $request->get_parameter('oauth_signature');
         $valid_sig = $method->checkSignature(
