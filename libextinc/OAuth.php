@@ -945,7 +945,7 @@ class OAuthServer
         $this->checkNonce($consumer, $token, $nonce, $timestamp);
 
         $signature_method = 'OAuthSignatureMethod_'.$this->getSignatureMethod($request);
-        /** psalm-suppress InvalidStringClass */
+        /** @psalm-suppress InvalidStringClass */
         $method = new $signature_method;
 
         $signature = $request->get_parameter('oauth_signature');

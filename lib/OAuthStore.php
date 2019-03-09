@@ -180,7 +180,7 @@ class OAuthStore extends \OAuthDataStore
      */
     public function lookup_nonce($consumer, $token, $nonce, $timestamp)
     {
-        \SimpleSAML\Logger::info('OAuth lookup_nonce('.$consumer.', '.$token.','.$nonce.')');
+        \SimpleSAML\Logger::info('OAuth lookup_nonce('.$consumer.', '.strval($token).','.$nonce.')');
         if ($this->store->exists('nonce', $nonce, $consumer->key)) {
             return true;
         }
