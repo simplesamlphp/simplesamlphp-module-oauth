@@ -1018,28 +1018,20 @@ class OAuthServer
     }
 }
 
-class OAuthDataStore
+abstract class OAuthDataStore
 {
     /**
      * @param string $consumer_key
-     * @return void
      */
-    public function lookup_consumer($consumer_key)
-    {
-        // implement me
-    }
+    abstract public function lookup_consumer($consumer_key);
 
 
     /**
      * @param OAuthConsumer $consumer
      * @param string $token_type
      * @param string $token
-     * @return void
      */
-    public function lookup_token($consumer, $token_type, $token)
-    {
-        // implement me
-    }
+    abstract public function lookup_token($consumer, $token_type, $token);
 
 
     /**
@@ -1047,38 +1039,23 @@ class OAuthDataStore
      * @param OAuthToken $token
      * @param string $nonce
      * @param int $timestamp
-     * @return void
      */
-    public function lookup_nonce($consumer, $token, $nonce, $timestamp)
-    {
-        // implement me
-    }
+    abstract public function lookup_nonce($consumer, $token, $nonce, $timestamp);
 
 
     /**
      * @param OAuthConsumer $consumer
      * @param callable|null $callback
-     * @return void
      */
-    public function new_request_token($consumer, $callback = null)
-    {
-        // return a new token attached to this consumer
-    }
+    abstract public function new_request_token($consumer, $callback = null);
 
 
     /**
      * @param OAuthToken $token
      * @param OAuthConsumer $consumer
      * @param string|null $verifier
-     * @return void
      */
-    public function new_access_token($token, $consumer, $verifier = null)
-    {
-        // return a new access token attached to this consumer
-        // for the user associated with this token if the request token
-        // is authorized
-        // should also invalidate the request token
-    }
+    abstract public function new_access_token($token, $consumer, $verifier = null);
 }
 
 class OAuthUtil

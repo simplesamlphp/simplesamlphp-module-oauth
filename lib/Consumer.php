@@ -80,13 +80,13 @@ class Consumer
      *
      * @param string $url
      * @param string $context
-     * @return string|array
+     * @return string
      * @throws \Exception
      */
-    public static function getHTTP($url, $context = '')
+    public static function getHTTP($url, array $context = '')
     {
         try {
-            $response = \SimpleSAML\Utils\HTTP::fetch($url);
+            $response = \SimpleSAML\Utils\HTTP::fetch($url, [], false);
         } catch (\SimpleSAML\Error\Exception $e) {
             $statuscode = 'unknown';
             if (preg_match('/^HTTP.*\s([0-9]{3})/', $http_response_header[0], $matches)) {
@@ -103,6 +103,7 @@ class Consumer
             throw new \Exception($error.':'.$url);
         }
         // Fall back to return response, if could not reckognize HTTP header. Should not happen.
+        /** @var string $response */
         return $response;
     }
 
@@ -171,7 +172,8 @@ class Consumer
         $acc_req->sign_request($this->signer, $this->consumer, $requestToken);
 
         try {
-            $response_acc = \SimpleSAML\Utils\HTTP::fetch($acc_req->to_url());
+            /** @var string $response_acc */
+            $response_acc = \SimpleSAML\Utils\HTTP::fetch($acc_req->to_url(), [], false);
         } catch (\SimpleSAML\Error\Exception $e) {
             throw new \Exception('Error contacting request_token endpoint on the OAuth Provider');
         }
@@ -230,14 +232,15 @@ class Consumer
     /**
      * @param string $url
      * @param \OAuthToken $accessToken
-     * @param array|null $opts
+     * @param array $opts
      * @return array|null
      */
-    public function getUserInfo($url, $accessToken, $opts = null)
+    public function getUserInfo($url, $accessToken, $opts = [])
     {
         $data_req = \OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "GET", $url, null);
         $data_req->sign_request($this->signer, $this->consumer, $accessToken);
 
+        /** @var string $data */
         $data = \SimpleSAML\Utils\HTTP::fetch($data_req->to_url(), $opts);
 
         return  json_decode($data, true);
