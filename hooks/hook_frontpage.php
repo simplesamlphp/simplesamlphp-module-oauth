@@ -1,5 +1,7 @@
 <?php
 
+use Webmozart\Assert\Assert;
+
 /**
  * Hook to add link to the frontpage.
  *
@@ -8,8 +10,8 @@
  */
 function oauth_hook_frontpage(&$links)
 {
-    assert(is_array($links));
-    assert(array_key_exists('links', $links));
+    Assert::isArray($links);
+    Assert::keyExists($links, 'links');
 
     $links['federation']['oauthregistry'] = [
         'href' => SimpleSAML\Module::getModuleURL('oauth/registry.php'),
