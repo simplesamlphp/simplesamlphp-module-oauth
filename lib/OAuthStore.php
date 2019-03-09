@@ -173,7 +173,7 @@ class OAuthStore extends \OAuthDataStore
 
     /**
      * @param \OAuthConsumer $consumer
-     * @param string $token
+     * @param string|null $token
      * @param string $nonce
      * @param int $timestamp
      * @return bool

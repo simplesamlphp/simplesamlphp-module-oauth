@@ -648,7 +648,7 @@ class OAuthRequest
             $out .= ($first) ? ' ' : ',';
             /** @var string $key */
             $key = OAuthUtil::urlencode_rfc3986($k);
-            /** @var string $vaule */
+            /** @var string $value */
             $value = OAuthUtil::urlencode_rfc3986($v);
             $out .= $key.'="'.$value.'"';
             $first = false;
@@ -909,11 +909,9 @@ class OAuthServer
      * @return OAuthToken
      * @throws OAuthException
      */
-    private function getToken($request, $consumer, $token_type = "access")
+    private function getToken(OAuthRequest $request, OAuthConsumer $consumer, $token_type = "access")
     {
-        $token_field = $request instanceof OAuthRequest
-            ? $request->get_parameter('oauth_token')
-            : null;
+        $token_field = $request->get_parameter('oauth_token');
 
         if (!empty($token_field)) {
             $token = $this->data_store->lookup_token($consumer, $token_type, $token_field);
@@ -947,6 +945,7 @@ class OAuthServer
         $this->checkNonce($consumer, $token, $nonce, $timestamp);
 
         $signature_method = 'OAuthSignatureMethod_'.$this->getSignatureMethod($request);
+        /** psalm-suppress InvalidStringClass */
         $method = new $signature_method;
 
         $signature = $request->get_parameter('oauth_signature');
@@ -992,7 +991,7 @@ class OAuthServer
      * check that the nonce is not repeated
      *
      * @param OAuthConsumer $consumer
-     * @param OAuthToken $token
+     * @param OAuthToken|null $token
      * @param string $nonce
      * @param int $timestamp
      * @return void
@@ -1037,7 +1036,7 @@ abstract class OAuthDataStore
 
     /**
      * @param OAuthConsumer $consumer
-     * @param OAuthToken $token
+     * @param OAuthToken|null $token
      * @param string $nonce
      * @param int $timestamp
      */
