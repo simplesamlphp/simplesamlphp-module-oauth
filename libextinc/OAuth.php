@@ -649,7 +649,7 @@ class OAuthRequest
             /** @var string $key */
             $key = OAuthUtil::urlencode_rfc3986($k);
             /** @var string $vaule */
-            $value = OAuthUtil::urlencode_rfc3986($value);
+            $value = OAuthUtil::urlencode_rfc3986($v);
             $out .= $key.'="'.$value.'"';
             $first = false;
         }
@@ -856,11 +856,9 @@ class OAuthServer
      * @param OAuthRequest $request
      * @return string
      */
-    private function getSignatureMethod($request)
+    private function getSignatureMethod(OAuthRequest $request)
     {
-        $signature_method = $request instanceof OAuthRequest
-            ? $request->get_parameter("oauth_signature_method")
-            : null;
+        $signature_method = $request->get_parameter("oauth_signature_method");
 
         if (!$signature_method) {
             // According to chapter 7 ("Accessing Protected Ressources") the signature-method
@@ -885,11 +883,9 @@ class OAuthServer
      * @param OAuthRequest $request
      * @return OAuthConsumer
      */
-    private function getConsumer($request)
+    private function getConsumer(OAuthRequest $request)
     {
-        $consumer_key = $request instanceof OAuthRequest
-            ? $request->get_parameter("oauth_consumer_key")
-            : null;
+        $consumer_key = $request->get_parameter("oauth_consumer_key");
 
         if (!$consumer_key) {
             throw new OAuthException("Invalid consumer key");
@@ -941,23 +937,20 @@ class OAuthServer
      * @return void
      * @throws OAuthException
      */
-    private function checkSignature($request, $consumer, $token)
+    private function checkSignature(OAuthRequest $request, OAuthConsumer $consumer, OAuthToken $token = null)
     {
         // this should probably be in a different method
-        $timestamp = $request instanceof OAuthRequest
-            ? $request->get_parameter('oauth_timestamp')
-            : null;
-        $nonce = $request instanceof OAuthRequest
-            ? $request->get_parameter('oauth_nonce')
-            : null;
+        $timestamp = $request->get_parameter('oauth_timestamp');
+        $nonce = $request->get_parameter('oauth_nonce');
 
         $this->checkTimestamp($timestamp);
         $this->checkNonce($consumer, $token, $nonce, $timestamp);
 
         $signature_method = $this->getSignatureMethod($request);
+        $method = new $('OAuthSignatureMethod_'.$signature_method)
 
         $signature = $request->get_parameter('oauth_signature');
-        $valid_sig = $signature_method->checkSignature(
+        $valid_sig = $method->checkSignature(
             $request,
             $consumer,
             $token,
@@ -1080,7 +1073,7 @@ class OAuthUtil
             return str_replace(
                 '+',
                 ' ',
-                str_replace('%7E', '~', rawurlencode($input))
+                str_replace('%7E', '~', rawurlencode(strval($input)))
             );
         } else {
             return '';
@@ -1200,7 +1193,7 @@ class OAuthUtil
      */
     public static function parse_parameters($input)
     {
-        if (!isset($input) || !$input) {
+        if (!strlen($input)) {
             return [];
         }
 
@@ -1243,6 +1236,7 @@ class OAuthUtil
 
         // Urlencode both keys and values
         $keys = OAuthUtil::urlencode_rfc3986(array_keys($params));
+        /** @var array $values */
         $values = OAuthUtil::urlencode_rfc3986(array_values($params));
         $params = array_combine($keys, $values);
 
