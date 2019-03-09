@@ -83,7 +83,7 @@ class Consumer
      * @return string
      * @throws \Exception
      */
-    public static function getHTTP($url, array $context = '')
+    public static function getHTTP($url, $context = '')
     {
         try {
             $response = \SimpleSAML\Utils\HTTP::fetch($url, [], false);
