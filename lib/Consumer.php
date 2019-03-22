@@ -243,6 +243,6 @@ class Consumer
         /** @var string $data */
         $data = \SimpleSAML\Utils\HTTP::fetch($data_req->to_url(), $opts);
 
-        return  json_decode($data, true);
+        return json_decode($data, true);
     }
 }
