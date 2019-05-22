@@ -89,11 +89,13 @@ class Consumer
             $response = \SimpleSAML\Utils\HTTP::fetch($url, [], false);
         } catch (\SimpleSAML\Error\Exception $e) {
             $statuscode = 'unknown';
+            /** psalm-suppress UndefinedVariable */
             if (preg_match('/^HTTP.*\s([0-9]{3})/', $http_response_header[0], $matches)) {
                 $statuscode = $matches[1];
             }
 
             $error = $context.' [statuscode: '.$statuscode.']: ';
+            /** psalm-suppress UndefinedVariable */
             $oautherror = self::getOAuthError($http_response_header);
 
             if (!empty($oautherror)) {

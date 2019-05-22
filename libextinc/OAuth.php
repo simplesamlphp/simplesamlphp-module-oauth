@@ -1234,6 +1234,7 @@ class OAuthUtil
         }
 
         // Urlencode both keys and values
+        /** @var array $keys */
         $keys = OAuthUtil::urlencode_rfc3986(array_keys($params));
         /** @var array $values */
         $values = OAuthUtil::urlencode_rfc3986(array_values($params));
