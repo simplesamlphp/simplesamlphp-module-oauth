@@ -90,12 +90,14 @@ class Consumer
         } catch (\SimpleSAML\Error\Exception $e) {
             $statuscode = 'unknown';
 
-            if (preg_match('/^HTTP.*\s([0-9]{3})/', /** psalm-suppress UndefinedVariable */ $http_response_header[0], $matches)) {
+            /** @psalm-suppress UndefinedVariable */
+            if (preg_match('/^HTTP.*\s([0-9]{3})/', $http_response_header[0], $matches)) {
                 $statuscode = $matches[1];
             }
 
             $error = $context.' [statuscode: '.$statuscode.']: ';
-            $oautherror = self::getOAuthError(/** psalm-suppress UndefinedVariable */ $http_response_header);
+            /** @psalm-suppress UndefinedVariable */
+            $oautherror = self::getOAuthError($http_response_header);
 
             if (!empty($oautherror)) {
                 $error .= $oautherror;
