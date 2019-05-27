@@ -58,5 +58,4 @@ $form = $editor->metaToForm($entry);
 
 $template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.edit.tpl.php');
 $template->data['form'] = $form;
-$template->data['jquery'] = ['core' => false, 'ui' => true, 'css' => true];
 $template->show();
