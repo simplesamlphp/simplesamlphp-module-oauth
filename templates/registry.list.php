@@ -1,5 +1,4 @@
 <?php
-$this->data['jquery'] = ['core' => true, 'ui' => true, 'css' => true];
 $this->data['head'] = '<link rel="stylesheet" type="text/css" href="/'.
     $this->data['baseurlpath'].'module.php/oauth/assets/oauth.css" />'."\n";
 $this->includeAtTemplateBase('includes/header.php');
@@ -18,7 +17,7 @@ foreach ($this->data['entries']['mine'] as $entryc) {
     echo '<tr class="'.$rows[$i % 2].'"><td>'.
         htmlspecialchars($entry['name']).'</td>	<td><code>'.htmlspecialchars($entry['key']).
         '</code></td><td><a href="registry.edit.php?editkey='.urlencode($entry['key']).
-        '">edit</a><a href="registry.php?delete='.urlencode($entry['key']).'">delete</a></td></tr>';
+        '">edit</a>&nbsp;&nbsp;<a href="registry.php?delete='.urlencode($entry['key']).'">delete</a></td></tr>';
 }
 if ($i == 0) {
     echo'<tr><td colspan="3">No entries registered</td></tr>';

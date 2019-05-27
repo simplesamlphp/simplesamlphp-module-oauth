@@ -2,11 +2,13 @@
 {% extends "base.twig" %}
 
 {% block preload %}
-    <link href="{{ baseurlpath }}assets/css/oauth.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="/{{ baseurlpath }}module.php/oauth/assets/css/uitheme1.12.1/jquery-ui.min.css">
+    <link href="/{{ baseurlpath }}module.php/oauth/assets/css/oauth.css" rel="stylesheet">
 {% endblock %}
 
 {% block postload %}
-    <script src="{{ baseurlpath}}assets/js/oauth.js"></script>
+    <script src="/{{ baseurlpath }}module.php/oauth/assets/js/jquery-ui-1.12.1.min.js"></script>
+    <script src="/{{ baseurlpath }}module.php/oauth/assets/js/oauth.js"></script>
 {% endblock %}
 
 {% block content %}
