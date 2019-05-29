@@ -18,7 +18,10 @@ if ($session->isValid($authsource)) {
     $userid = $attributes[$useridattr][0];
 } else {
     $as = \SimpleSAML\Auth\Source::getById($authsource);
-    $as->initLogin(\SimpleSAML\Utils\HTTP::getSelfURL());
+    if (!is_null($as)) {
+        $as->initLogin(\SimpleSAML\Utils\HTTP::getSelfURL());
+    }
+    throw new \Exception('Invalid authentication source: '.$authsource);
 }
 
 if (isset($_REQUEST['delete'])) {
@@ -40,8 +43,8 @@ if (is_array($list)) {
                 continue;
             }
         }
+        $slist['others'][] = $listitem;
     }
-    $slist['others'][] = $listitem;
 }
 
 $template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.list.php');
