@@ -14,13 +14,18 @@ require_once(dirname(dirname(__FILE__)).'/libextinc/OAuth.php');
  * @author Mark Dobrinic, <mdobrinic@cozmanova.com>, Cozmanova bv
  * @package SimpleSAMLphp
  */
-
 class OAuthStore extends \OAuthDataStore
 {
+    /** @var \SimpleSAML\Module\core\Storage\SQLPermanentStorage */
     private $store;
+
+    /** @var \SimpleSAML\Configuration */
     private $config;
+
+    /** @var string */
     private $defaultversion = '1.0';
 
+    /** @var array */
     protected $_store_tables = [
         'consumers' => 'consumer = array with consumer attributes',
         'nonce' => 'nonce+consumer_key = -boolean-',
@@ -42,7 +47,7 @@ class OAuthStore extends \OAuthDataStore
      * Attach the data to the token, and establish the Callback URL and verifier
      * @param string $requestTokenKey RequestToken that was authorized
      * @param string $data Data that is authorized and to be attached to the requestToken
-     * @return array(string:url, string:verifier) ; empty verifier for 1.0-response
+     * @return string[] empty verifier for 1.0-response
      */
     public function authorize($requestTokenKey, $data)
     {
@@ -73,6 +78,7 @@ class OAuthStore extends \OAuthDataStore
         return [$url, $verifier];
     }
 
+
     /**
      * Perform lookup whether a given token exists in the list of authorized tokens; if a verifier is
      * passed as well, the verifier *must* match the verifier that was registered with the token<br/>
@@ -87,6 +93,12 @@ class OAuthStore extends \OAuthDataStore
         return $this->store->exists('authorized', $requestToken, $verifier);
     }
 
+
+    /**
+     * @param string $token
+     * @param string $verifier
+     * @return mixed
+     */
     public function getAuthorizedData($token, $verifier = '')
     {
         \SimpleSAML\Logger::info('OAuth getAuthorizedData('.$token.')');
@@ -94,6 +106,13 @@ class OAuthStore extends \OAuthDataStore
         return $data['value'];
     }
 
+
+    /**
+     * @param string $requestToken
+     * @param string $verifier
+     * @param string $accessTokenKey
+     * @return void
+     */
     public function moveAuthorizedData($requestToken, $verifier, $accessTokenKey)
     {
         \SimpleSAML\Logger::info('OAuth moveAuthorizedData('.$requestToken.', '.$accessTokenKey.')');
@@ -109,6 +128,10 @@ class OAuthStore extends \OAuthDataStore
         $this->store->set('authorized', $accessTokenKey, '', $authorizedData, $this->config->getValue('accessTokenDuration', 86400)); //60*60*24=86400
     }
 
+    /**
+     * @param string $consumer_key
+     * @return \OAuthConsumer|null
+     */
     public function lookup_consumer($consumer_key)
     {
         \SimpleSAML\Logger::info('OAuth lookup_consumer('.$consumer_key.')');
@@ -129,6 +152,14 @@ class OAuthStore extends \OAuthDataStore
         }
     }
 
+
+    /**
+     * @param \OAuthConsumer $consumer
+     * @param string $tokenType
+     * @param string $token
+     * @return string
+     * @throws \Exception
+     */
     public function lookup_token($consumer, $tokenType = 'default', $token)
     {
         \SimpleSAML\Logger::info('OAuth lookup_token('.$consumer->key.', '.$tokenType.','.$token.')');
@@ -139,9 +170,17 @@ class OAuthStore extends \OAuthDataStore
         return $data['value'];
     }
 
+
+    /**
+     * @param \OAuthConsumer $consumer
+     * @param string|null $token
+     * @param string $nonce
+     * @param int $timestamp
+     * @return bool
+     */
     public function lookup_nonce($consumer, $token, $nonce, $timestamp)
     {
-        \SimpleSAML\Logger::info('OAuth lookup_nonce('.$consumer.', '.$token.','.$nonce.')');
+        \SimpleSAML\Logger::info('OAuth lookup_nonce('.$consumer.', '.strval($token).','.$nonce.')');
         if ($this->store->exists('nonce', $nonce, $consumer->key)) {
             return true;
         }
@@ -149,6 +188,13 @@ class OAuthStore extends \OAuthDataStore
         return false;
     }
 
+
+    /**
+     * @param \OAuthConsumer $consumer
+     * @param callable|null $callback
+     * @param string|null $version
+     * @return \OAuthToken
+     */
     public function new_request_token($consumer, $callback = null, $version = null)
     {
         \SimpleSAML\Logger::info('OAuth new_request_token('.$consumer.')');
@@ -175,6 +221,13 @@ class OAuthStore extends \OAuthDataStore
         return $token;
     }
 
+
+    /**
+     * @param string $requestToken
+     * @param \OAuthConsumer $consumer
+     * @param string|null $verifier
+     * @return \OAuthToken
+     */
     public function new_access_token($requestToken, $consumer, $verifier = null)
     {
         \SimpleSAML\Logger::info('OAuth new_access_token('.$requestToken.','.$consumer.')');
@@ -188,6 +241,7 @@ class OAuthStore extends \OAuthDataStore
         );
         return $accesstoken;
     }
+
 
     /**
      * Return OAuthConsumer-instance that a given requestToken was issued to
