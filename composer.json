@@ -20,8 +20,7 @@
     },
     "require-dev": {
         "simplesamlphp/simplesamlphp": "^1.17",
-        "phpunit/phpunit": "~4.8.36",
-        "webmozart/assert": "1.4"
+        "phpunit/phpunit": "~4.8.36"
     },
     "support": {
         "issues": "https://github.com/simplesamlphp/simplesamlphp-module-oauth/issues",
