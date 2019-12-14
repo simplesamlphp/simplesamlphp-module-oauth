@@ -16,7 +16,7 @@ class Registry
      * @return void
      * @throws \Exception
      */
-    public static function requireOwnership($entry, $userid)
+    public static function requireOwnership(string $entry, string $userid): void
     {
         if (!isset($entry['owner'])) {
             throw new \Exception('OAuth Consumer has no owner. Which means no one is granted access, not even you.');
@@ -34,10 +34,10 @@ class Registry
      * @param string $key
      * @return void
      */
-    protected function getStandardField($request, &$entry, $key)
+    protected function getStandardField(array $request, array &$entry, string $key): void
     {
-        if (array_key_exists('field_'.$key, $request)) {
-            $entry[$key] = $request['field_'.$key];
+        if (array_key_exists('field_' . $key, $request)) {
+            $entry[$key] = $request['field_' . $key];
         } elseif (isset($entry[$key])) {
             unset($entry[$key]);
         }
@@ -50,7 +50,7 @@ class Registry
      * @param array|null $override
      * @return array
      */
-    public function formToMeta($request, $entry = [], $override = null)
+    public function formToMeta(array $request, array $entry = [], array $override = null): array
     {
         $this->getStandardField($request, $entry, 'name');
         $this->getStandardField($request, $entry, 'description');
@@ -74,13 +74,13 @@ class Registry
      * @return void
      * @throws \Exception
      */
-    protected function requireStandardField($request, $key)
+    protected function requireStandardField(array $request, string $key): void
     {
-        if (!array_key_exists('field_'.$key, $request)) {
-            throw new \Exception('Required field ['.$key.'] was missing.');
+        if (!array_key_exists('field_' . $key, $request)) {
+            throw new \Exception('Required field [' . $key . '] was missing.');
         }
-        if (empty($request['field_'.$key])) {
-            throw new \Exception('Required field ['.$key.'] was empty.');
+        if (empty($request['field_' . $key])) {
+            throw new \Exception('Required field [' . $key . '] was empty.');
         }
     }
 
@@ -89,7 +89,7 @@ class Registry
      * @param array $request
      * @return void
      */
-    public function checkForm($request)
+    public function checkForm(array $request): void
     {
         $this->requireStandardField($request, 'name');
         $this->requireStandardField($request, 'description');
@@ -101,9 +101,9 @@ class Registry
      * @param string $name
      * @return string
      */
-    protected function header($name)
+    protected function header(string $name): string
     {
-        return '<tr><td>&nbsp;</td><td class="header">'.$name.'</td></tr>';
+        return '<tr><td>&nbsp;</td><td class="header">' . $name . '</td></tr>';
     }
 
 
@@ -113,13 +113,13 @@ class Registry
      * @param string $name
      * @return string
      */
-    protected function readonlyDateField($metadata, $key, $name)
+    protected function readonlyDateField(array $metadata, string $key, string $name): string
     {
         $value = '<span style="color: #aaa">Not set</a>';
         if (array_key_exists($key, $metadata)) {
             $value = date('j. F Y, G:i', $metadata[$key]);
         }
-        return '<tr><td class="name">'.$name.'</td><td class="data">'.$value.'</td></tr>';
+        return '<tr><td class="name">' . $name . '</td><td class="data">' . $value . '</td></tr>';
     }
 
 
@@ -129,13 +129,13 @@ class Registry
      * @param string $name
      * @return string
      */
-    protected function readonlyField($metadata, $key, $name)
+    protected function readonlyField(array $metadata, string $key, string $name): string
     {
         $value = '';
         if (array_key_exists($key, $metadata)) {
             $value = $metadata[$key];
         }
-        return '<tr><td class="name">'.$name.'</td><td class="data">'.htmlspecialchars($value).'</td></tr>';
+        return '<tr><td class="name">' . $name . '</td><td class="data">' . htmlspecialchars($value) . '</td></tr>';
     }
 
 
@@ -144,9 +144,9 @@ class Registry
      * @param string $value
      * @return string
      */
-    protected function hiddenField($key, $value)
+    protected function hiddenField(string $key, string $value): string
     {
-        return '<input type="hidden" name="'.$key.'" value="'.htmlspecialchars($value).'" />';
+        return '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($value) . '" />';
     }
 
 
@@ -155,7 +155,7 @@ class Registry
      * @param string $key
      * @return void
      */
-    protected function flattenLanguageField(&$metadata, $key)
+    protected function flattenLanguageField(array &$metadata, string $key): void
     {
         if (array_key_exists($key, $metadata)) {
             if (is_array($metadata[$key])) {
@@ -176,7 +176,7 @@ class Registry
      * @param bool $textarea
      * @return string
      */
-    protected function standardField($metadata, $key, $name, $textarea = false)
+    protected function standardField(array $metadata, string $key, string $name, bool $textarea = false): string
     {
         $value = '';
         if (array_key_exists($key, $metadata)) {
@@ -184,11 +184,11 @@ class Registry
         }
 
         if ($textarea) {
-            return '<tr><td class="name">'.$name.'</td><td class="data">
-                <textarea name="field_'.$key.'" rows="5" cols="50">'.$value.'</textarea></td></tr>';
+            return '<tr><td class="name">' . $name . '</td><td class="data">
+                <textarea name="field_' . $key . '" rows="5" cols="50">' . $value . '</textarea></td></tr>';
         } else {
-            return '<tr><td class="name">'.$name.'</td><td class="data">
-                <input type="text" size="60" name="field_'.$key.'" value="'.$value.'" /></td></tr>';
+            return '<tr><td class="name">' . $name . '</td><td class="data">
+                <input type="text" size="60" name="field_' . $key . '" value="' . $value . '" /></td></tr>';
         }
     }
 
@@ -197,30 +197,30 @@ class Registry
      * @param array $metadata
      * @return string
      */
-    public function metaToForm($metadata)
+    public function metaToForm(array $metadata): string
     {
-        return '<form action="registry.edit.php" method="post">'.
-            '<div id="tabdiv">'.
-            '<ul class="tabset_tabs">'.
-            '<li class="tab-link current" data-tab="basic"><a href="#basic">Name and description</a></li>'.
-            '</ul>'.
-            '<div id="basic" class="tabset_content current"><table class="formtable">'.
-                $this->standardField($metadata, 'name', 'Name of client').
-                $this->standardField($metadata, 'description', 'Description of client', true).
-                $this->readonlyField($metadata, 'owner', 'Owner').
-                $this->standardField($metadata, 'key', 'Consumer Key').
-                $this->readonlyField($metadata, 'secret', 'Consumer Secret<br />(Used for HMAC_SHA1 signatures)').
+        return '<form action="registry.edit.php" method="post">' .
+            '<div id="tabdiv">' .
+            '<ul class="tabset_tabs">' .
+            '<li class="tab-link current" data-tab="basic"><a href="#basic">Name and description</a></li>' .
+            '</ul>' .
+            '<div id="basic" class="tabset_content current"><table class="formtable">' .
+                $this->standardField($metadata, 'name', 'Name of client') .
+                $this->standardField($metadata, 'description', 'Description of client', true) .
+                $this->readonlyField($metadata, 'owner', 'Owner') .
+                $this->standardField($metadata, 'key', 'Consumer Key') .
+                $this->readonlyField($metadata, 'secret', 'Consumer Secret<br />(Used for HMAC_SHA1 signatures)') .
                 $this->standardField(
                     $metadata,
                     'RSAcertificate',
                     'RSA certificate (PEM)<br />(Used for RSA_SHA1 signatures)',
                     true
-                ).
-                $this->standardField($metadata, 'callback_url', 'Static/enforcing callback-url').
-            '</table></div>'.
-            '</div>'.
-            $this->hiddenField('field_secret', $metadata['secret']).
-            '<input type="submit" name="submit" value="Save" style="margin-top: 5px" />'.
+                ) .
+                $this->standardField($metadata, 'callback_url', 'Static/enforcing callback-url') .
+            '</table></div>' .
+            '</div>' .
+            $this->hiddenField('field_secret', $metadata['secret']) .
+            '<input type="submit" name="submit" value="Save" style= "margin-top: 5px" />' .
             '</form>';
     }
 }

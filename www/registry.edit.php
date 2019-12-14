@@ -22,7 +22,7 @@ if ($session->isValid($authsource)) {
     if (!is_null($as)) {
         $as->initLogin(\SimpleSAML\Utils\HTTP::getSelfURL());
     }
-    throw new \Exception('Invalid authentication source: '.$authsource);
+    throw new \Exception('Invalid authentication source: ' . $authsource);
 }
 
 if (array_key_exists('editkey', $_REQUEST)) {
@@ -48,14 +48,14 @@ if (isset($_POST['submit'])) {
 
     $store->set('consumers', $entry['key'], '', $entry);
 
-    $template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.saved.php');
+    $template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.saved.twig');
     $template->data['entry'] = $entry;
-    $template->show();
+    $template->send();
     exit;
 }
 
 $form = $editor->metaToForm($entry);
 
-$template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.edit.tpl.php');
+$template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.edit.twig');
 $template->data['form'] = $form;
-$template->show();
+$template->send();

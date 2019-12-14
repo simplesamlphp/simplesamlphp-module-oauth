@@ -1,4 +1,5 @@
 <?php
+
 // Load SimpleSAMLphp, configuration and metadata
 $config = \SimpleSAML\Configuration::getInstance();
 $session = \SimpleSAML\Session::getSessionFromRequest();
@@ -21,7 +22,7 @@ if ($session->isValid($authsource)) {
     if (!is_null($as)) {
         $as->initLogin(\SimpleSAML\Utils\HTTP::getSelfURL());
     }
-    throw new \Exception('Invalid authentication source: '.$authsource);
+    throw new \Exception('Invalid authentication source: ' . $authsource);
 }
 
 if (isset($_REQUEST['delete'])) {
@@ -47,7 +48,7 @@ if (is_array($list)) {
     }
 }
 
-$template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.list.php');
+$template = new \SimpleSAML\XHTML\Template($config, 'oauth:registry.list.twig');
 $template->data['entries'] = $slist;
 $template->data['userid'] = $userid;
-$template->show();
+$template->send();

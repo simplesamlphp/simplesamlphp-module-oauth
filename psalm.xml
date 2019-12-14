@@ -5,7 +5,7 @@
     totallyTyped="false"
 >
     <projectFiles>
-        <directory name="config-template" />
+        <directory name="config-templates" />
         <directory name="hooks" />
         <directory name="lib" />
         <directory name="libextinc" />

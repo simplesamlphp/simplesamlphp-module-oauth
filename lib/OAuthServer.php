@@ -2,7 +2,7 @@
 
 namespace SimpleSAML\Module\oauth;
 
-require_once(dirname(dirname(__FILE__)).'/libextinc/OAuth.php');
+require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
 
 /**
  * OAuth Provider implementation..
@@ -15,7 +15,7 @@ class OAuthServer extends \OAuthServer
     /**
      * @param \OAuthDataStore $store
      */
-    public function __construct($store)
+    public function __construct(\OAuthDataStore $store)
     {
         parent::__construct($store);
     }
@@ -24,7 +24,7 @@ class OAuthServer extends \OAuthServer
     /**
      * @return array
      */
-    public function get_signature_methods()
+    public function get_signature_methods(): array
     {
         return $this->signature_methods;
     }
