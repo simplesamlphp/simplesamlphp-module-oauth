@@ -144,7 +144,7 @@ class OAuthStore extends \OAuthDataStore
      * @param string $consumer_key
      * @return \OAuthConsumer|null
      */
-    public function lookup_consumer(string $consumer_key): ?\OAuthConsumer
+    public function lookup_consumer(string $consumer_key): \OAuthConsumer
     {
         \SimpleSAML\Logger::info('OAuth lookup_consumer(' . $consumer_key . ')');
         if (!$this->store->exists('consumers', $consumer_key, '')) {
