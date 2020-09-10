@@ -5,7 +5,6 @@ namespace SimpleSAML\Module\oauth;
 /**
  * Editor for OAuth Client Registry
  *
- * @author Andreas Åkre Solberg <andreas@uninett.no>, UNINETT AS.
  * @package SimpleSAMLphp
  */
 class Registry

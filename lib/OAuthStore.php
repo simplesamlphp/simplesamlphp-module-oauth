@@ -10,8 +10,6 @@ require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
  * Updated version, works with consumer-callbacks, certificates and 1.0-RevA protocol
  * behaviour (requestToken-callbacks and verifiers)
  *
- * @author Andreas Åkre Solberg, <andreas.solberg@uninett.no>, UNINETT AS.
- * @author Mark Dobrinic, <mdobrinic@cozmanova.com>, Cozmanova bv
  * @package SimpleSAMLphp
  */
 class OAuthStore extends \OAuthDataStore
