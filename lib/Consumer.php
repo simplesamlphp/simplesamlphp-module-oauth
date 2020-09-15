@@ -31,7 +31,6 @@ class Consumer
 
     /**
      * Used only to load the libextinc library early
-     * @return void
      */
     public static function dummy(): void
     {

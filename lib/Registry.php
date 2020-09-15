@@ -12,7 +12,6 @@ class Registry
     /**
      * @param array $entry
      * @param string $userid
-     * @return void
      * @throws \Exception
      */
     public static function requireOwnership(string $entry, string $userid): void
@@ -31,7 +30,6 @@ class Registry
      * @param array $request
      * @param array &$entry
      * @param string $key
-     * @return void
      */
     protected function getStandardField(array $request, array &$entry, string $key): void
     {
@@ -70,7 +68,6 @@ class Registry
     /**
      * @param array $request
      * @param string $key
-     * @return void
      * @throws \Exception
      */
     protected function requireStandardField(array $request, string $key): void
@@ -86,7 +83,6 @@ class Registry
 
     /**
      * @param array $request
-     * @return void
      */
     public function checkForm(array $request): void
     {
@@ -152,7 +148,6 @@ class Registry
     /**
      * @param array &$metadata
      * @param string $key
-     * @return void
      */
     protected function flattenLanguageField(array &$metadata, string $key): void
     {

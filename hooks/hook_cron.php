@@ -6,7 +6,6 @@ use Webmozart\Assert\Assert;
  * Hook to run a cron job.
  *
  * @param array &$croninfo  Output
- * @return void
  */
 function oauth_hook_cron(array &$croninfo): void
 {

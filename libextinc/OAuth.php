@@ -384,7 +384,6 @@ class OAuthRequest
      * @param string $http_method
      * @param string $http_url
      * @param array|null $parameters
-     * @return void
      */
     public function __construct(string $http_method, string $http_url, array $parameters = null)
     {
@@ -496,7 +495,6 @@ class OAuthRequest
      * @param string $name
      * @param string $value
      * @param bool $allow_duplicates
-     * @return void
      */
     public function set_parameter(string $name, string $value, bool $allow_duplicates = true): void
     {
@@ -536,7 +534,6 @@ class OAuthRequest
 
     /**
      * @param string $name
-     * @return void
      */
     public function unset_parameter(string $name): void
     {
@@ -695,7 +692,6 @@ class OAuthRequest
      * @param OAuthSignatureMethod $signature_method
      * @param OAuthConsumer $consumer
      * @param OAuthToken|null $token
-     * @return void
      */
     public function sign_request(
         OAuthSignatureMethod $signature_method,
@@ -777,7 +773,6 @@ class OAuthServer
 
     /**
      * @param OAuthSignatureMethod $signature_method
-     * @return void
      */
     public function add_signature_method(OAuthSignatureMethod $signature_method): void
     {
@@ -963,7 +958,6 @@ class OAuthServer
      * @param OAuthRequest $request
      * @param OAuthConsumer $consumer
      * @param OAuthToken $token|null
-     * @return void
      * @throws OAuthException
      */
     private function checkSignature(OAuthRequest $request, OAuthConsumer $consumer, OAuthToken $token = null): void
@@ -997,7 +991,6 @@ class OAuthServer
      * check that the timestamp is new enough
      *
      * @param int|null $timestamp
-     * @return void
      * @throws OAuthException
      */
     private function checkTimestamp(?int $timestamp): void
@@ -1025,7 +1018,6 @@ class OAuthServer
      * @param OAuthToken|null $token
      * @param string $nonce
      * @param int $timestamp
-     * @return void
      * @throws OAuthException
      */
     private function checkNonce(OAuthConsumer $consumer, ?OAuthToken $token, string $nonce, int $timestamp): void

@@ -115,7 +115,6 @@ class OAuthStore extends \OAuthDataStore
      * @param string $requestToken
      * @param string $verifier
      * @param string $accessTokenKey
-     * @return void
      */
     public function moveAuthorizedData(string $requestToken, string $verifier, string $accessTokenKey): void
     {
