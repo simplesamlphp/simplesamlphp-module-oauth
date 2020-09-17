@@ -182,12 +182,12 @@ class OAuthStore extends \OAuthDataStore
 
     /**
      * @param \OAuthConsumer $consumer
-     * @param string|null $token
+     * @param \OAuthToken|null $token
      * @param string $nonce
      * @param int $timestamp
      * @return bool
      */
-    public function lookup_nonce(\OAuthConsumer $consumer, ?string $token, string $nonce, int $timestamp): bool
+    public function lookup_nonce(\OAuthConsumer $consumer, ?\OAuthToken $token, string $nonce, int $timestamp): bool
     {
         \SimpleSAML\Logger::info('OAuth lookup_nonce(' . $consumer . ', ' . strval($token) . ',' . $nonce . ')');
         if ($this->store->exists('nonce', $nonce, $consumer->key)) {
@@ -241,13 +241,13 @@ class OAuthStore extends \OAuthDataStore
 
 
     /**
-     * @param string $requestToken
+     * @param \OAuthToken $requestToken
      * @param \OAuthConsumer $consumer
      * @param string|null $verifier
      * @return \OAuthToken
      */
     public function new_access_token(
-        string $requestToken,
+        \OAuthToken $requestToken,
         \OAuthConsumer $consumer,
         string $verifier = null
     ): \OAuthToken {
