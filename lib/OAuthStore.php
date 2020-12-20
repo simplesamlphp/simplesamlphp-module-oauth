@@ -24,7 +24,7 @@ class OAuthStore extends \OAuthDataStore
     private $defaultversion = '1.0';
 
     /** @var array */
-    protected $_store_tables = [
+    protected $store_tables = [
         'consumers' => 'consumer = array with consumer attributes',
         'nonce' => 'nonce+consumer_key = -boolean-',
         'requesttorequest' => 'requestToken.key = array(version,callback,consumerKey,)',
