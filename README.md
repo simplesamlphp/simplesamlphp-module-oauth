@@ -1,5 +1,6 @@
 ![Build Status](https://github.com/simplesamlphp/simplesamlphp-module-oauth/workflows/CI/badge.svg?branch=master)
 [![Coverage Status](https://codecov.io/gh/simplesamlphp/simplesamlphp-module-oauth/branch/master/graph/badge.svg)](https://codecov.io/gh/simplesamlphp/simplesamlphp-module-oauth)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/simplesamlphp/simplesamlphp-module-oauth/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/simplesamlphp/simplesamlphp-module-oauth/?branch=master)
 
 # simplesamlphp-module-oauth
 Ancient Oauth1 module for SimpleSAMLphp
