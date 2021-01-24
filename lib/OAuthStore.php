@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SimpleSAML\Module\oauth;
 
 require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
+
+use SimpleSAML\Configuration;
+use SimpleSAML\Module\core\Storage\SQLPermanentStorage;
 
 /**
  * OAuth Store
@@ -15,16 +20,16 @@ require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
 class OAuthStore extends \OAuthDataStore
 {
     /** @var \SimpleSAML\Module\core\Storage\SQLPermanentStorage */
-    private $store;
+    private SQLPermanentStorage $store;
 
     /** @var \SimpleSAML\Configuration */
-    private $config;
+    private Configuration $config;
 
     /** @var string */
-    private $defaultversion = '1.0';
+    private string $defaultversion = '1.0';
 
     /** @var array */
-    protected $store_tables = [
+    protected array $store_tables = [
         'consumers' => 'consumer = array with consumer attributes',
         'nonce' => 'nonce+consumer_key = -boolean-',
         'requesttorequest' => 'requestToken.key = array(version,callback,consumerKey,)',

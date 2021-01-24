@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SimpleSAML\Module\oauth;
 
 require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');

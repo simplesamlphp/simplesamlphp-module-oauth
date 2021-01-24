@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SimpleSAML\Module\oauth;
 
 require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
@@ -12,10 +14,10 @@ require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
 class Consumer
 {
     /** @var \OAuthConsumer */
-    private $consumer;
+    private \OAuthConsumer $consumer;
 
     /** @var \OAuthSignatureMethod */
-    private $signer;
+    private \OAuthSignatureMethod $signer;
 
 
     /**

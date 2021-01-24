@@ -1,6 +1,8 @@
 <?php
 
-use Webmozart\Assert\Assert;
+declare(strict_types=1);
+
+use SimpleSAML\Assert\Assert;
 
 /**
  * Hook to run a cron job.
