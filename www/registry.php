@@ -20,7 +20,8 @@ if ($session->isValid($authsource)) {
 } else {
     $as = \SimpleSAML\Auth\Source::getById($authsource);
     if (!is_null($as)) {
-        $as->initLogin(\SimpleSAML\Utils\HTTP::getSelfURL());
+        $httpUtils = new \SimpleSAML\Utils\HTTP();
+        $as->initLogin($httpUtils->getSelfURL());
     }
     throw new \Exception('Invalid authentication source: ' . $authsource);
 }

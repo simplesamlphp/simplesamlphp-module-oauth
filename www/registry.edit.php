@@ -20,7 +20,8 @@ if ($session->isValid($authsource)) {
 } else {
     $as = \SimpleSAML\Auth\Source::getById($authsource);
     if (!is_null($as)) {
-        $as->initLogin(\SimpleSAML\Utils\HTTP::getSelfURL());
+        $httpUtils = new \SimpleSAML\Utils\HTTP();
+        $as->initLogin($httpUtils->getSelfURL());
     }
     throw new \Exception('Invalid authentication source: ' . $authsource);
 }
@@ -30,10 +31,11 @@ if (array_key_exists('editkey', $_REQUEST)) {
     $entry = $entryc['value'];
     \SimpleSAML\Module\oauth\Registry::requireOwnership($entry, $userid);
 } else {
+    $randomUtils = new \SimpleSAML\Utils\Random();
     $entry = [
         'owner' => $userid,
-        'key' => \SimpleSAML\Utils\Random::generateID(),
-        'secret' => \SimpleSAML\Utils\Random::generateID(),
+        'key' => $randomUtils->generateID(),
+        'secret' => $randomUtils->generateID(),
     ];
 }
 

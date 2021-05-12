@@ -8,6 +8,7 @@ require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
 
 use SimpleSAML\Configuration;
 use SimpleSAML\Module\core\Storage\SQLPermanentStorage;
+use SimpleSAML\Utils;
 
 /**
  * OAuth Store
@@ -73,8 +74,10 @@ class OAuthStore extends \OAuthDataStore
             $url = $oConsumer->callback_url;
         }
 
-        $verifier = \SimpleSAML\Utils\Random::generateID();
-        $url = \SimpleSAML\Utils\HTTP::addURLParameters($url, ["oauth_verifier" => $verifier]);
+        $randomUtils = new Utils\Random();
+        $httpUtils = new Utils\HTTP();
+        $verifier = $randomUtils->generateID();
+        $url = $httpUtils->addURLParameters($url, ["oauth_verifier" => $verifier]);
 
         $this->store->set(
             'authorized',
@@ -224,7 +227,8 @@ class OAuthStore extends \OAuthDataStore
 
         $lifetime = $this->config->getValue('requestTokenDuration', 1800); //60*30
 
-        $token = new \OAuthToken(\SimpleSAML\Utils\Random::generateID(), \SimpleSAML\Utils\Random::generateID());
+        $randomUtils = new Utils\Random();
+        $token = new \OAuthToken($randomUtils->generateID(), $randomUtils->generateID());
         $token->callback = $callback; // OAuth1.0-RevA
         $this->store->set('request', $token->key, $consumer->key, $token, $lifetime);
 
@@ -256,8 +260,9 @@ class OAuthStore extends \OAuthDataStore
         \OAuthConsumer $consumer,
         string $verifier = null
     ): \OAuthToken {
+        $randomUtils = new Utils\Random();
         \SimpleSAML\Logger::info('OAuth new_access_token(' . $requestToken . ',' . $consumer . ')');
-        $accesstoken = new \OAuthToken(\SimpleSAML\Utils\Random::generateID(), \SimpleSAML\Utils\Random::generateID());
+        $accesstoken = new \OAuthToken($randomUtils->generateID(), $randomUtils->generateID());
         $this->store->set(
             'access',
             $accesstoken->key,

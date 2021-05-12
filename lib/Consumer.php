@@ -6,6 +6,8 @@ namespace SimpleSAML\Module\oauth;
 
 require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
 
+use SimpleSAML\Utils;
+
 /**
  * OAuth Consumer
  *
@@ -86,7 +88,8 @@ class Consumer
     public static function getHTTP(string $url, string $context = ''): string
     {
         try {
-            $response = \SimpleSAML\Utils\HTTP::fetch($url, [], false);
+            $httpUtils = new Utils\HTTP();
+            $response = $httpUtils->fetch($url, [], false);
         } catch (\SimpleSAML\Error\Exception $e) {
             $statuscode = 'unknown';
 
@@ -157,9 +160,10 @@ class Consumer
         if ($callback) {
             $params['oauth_callback'] = $callback;
         }
-        $authorizeURL = \SimpleSAML\Utils\HTTP::addURLParameters($url, $params);
+        $httpUtils = new Utils\HTTP();
+        $authorizeURL = $httpUtils->addURLParameters($url, $params);
         if ($redirect) {
-            \SimpleSAML\Utils\HTTP::redirectTrustedURL($authorizeURL);
+            $httpUtils->redirectTrustedURL($authorizeURL);
             exit;
         }
         return $authorizeURL;
@@ -178,9 +182,10 @@ class Consumer
         $acc_req = \OAuthRequest::from_consumer_and_token($this->consumer, $requestToken, "GET", $url, $parameters);
         $acc_req->sign_request($this->signer, $this->consumer, $requestToken);
 
+        $httpUtils = new Utils\HTTP();
         try {
             /** @var string $response_acc */
-            $response_acc = \SimpleSAML\Utils\HTTP::fetch($acc_req->to_url(), [], false);
+            $response_acc = $httpUtils->fetch($acc_req->to_url(), [], false);
         } catch (\SimpleSAML\Error\Exception $e) {
             throw new \Exception('Error contacting request_token endpoint on the OAuth Provider');
         }
@@ -227,8 +232,9 @@ class Consumer
             ],
         ];
 
+        $httpUtils = new Utils\HTTP();
         try {
-            $response = \SimpleSAML\Utils\HTTP::fetch($url, $opts);
+            $response = $httpUtils->fetch($url, $opts);
         } catch (\SimpleSAML\Error\Exception $e) {
             throw new \SimpleSAML\Error\Exception('Failed to push definition file to ' . $url);
         }
@@ -247,8 +253,9 @@ class Consumer
         $data_req = \OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "GET", $url, null);
         $data_req->sign_request($this->signer, $this->consumer, $accessToken);
 
+        $httpUtils = new Utils\HTTP();
         /** @var string $data */
-        $data = \SimpleSAML\Utils\HTTP::fetch($data_req->to_url(), $opts);
+        $data = $httpUtils->fetch($data_req->to_url(), $opts);
 
         return json_decode($data, true);
     }
