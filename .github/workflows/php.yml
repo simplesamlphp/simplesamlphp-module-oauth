@@ -14,7 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest, windows-latest]
-        tools: composer:v2
         php-versions: ['7.4', '8.0']
 
     steps:
